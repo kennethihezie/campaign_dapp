@@ -1,10 +1,12 @@
 /* Components */
-import { Counter } from './components/Counter/Counter'
+import ClientPage from "./clientPage"
 
-export default function IndexPage() {
-  return <Counter />
+export default function Page() {
+
+  return <ClientPage />
 }
 
+
 export const metadata = {
-  title: 'Redux Toolkit',
+  title: 'Campaign Dapp',
 }
