@@ -1,10 +1,17 @@
+'use client'
+
 import Image from "next/image"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 const NavBar = () => {
+   const path = usePathname()
+
     return <nav className="flex flex-row justify-between items-center py-3 px-8 md:px-16 text-white bg-blue-500 shadow-lg sticky top-0">
         <div className="text-2xl font-bold">
-           Campaign Dapp
+           {
+            path.includes('new') ? 'New Campaign' : 'Campaign Dapp'
+           }
         </div>
 
         
@@ -17,18 +24,20 @@ const NavBar = () => {
          </div>
 
 
-        <div className="group">
-        <Link href={'/'} className="flex flex-row space-x-2 group-hover:border-b border-white items-center">
-        <Image
-             src={'images/add.svg'}
+        {
+          path.includes('new') ? null : (
+            <Link href={'/campaign/new'} className="flex flex-row space-x-2 group-hover:border-b border-white items-center">
+             <Image
+             src={'/images/add.svg'}
              width={25}
              height={24}
              alt=""
              priority />
 
-          <div className="text-md">Add Campaign</div>   
-        </Link>
-        </div>
+            <div className="text-md">Add Campaign</div>   
+          </Link>
+          )
+        }
         </div>
     </nav>
 }

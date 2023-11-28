@@ -11,7 +11,6 @@ export const fetchContractsAsync = createAppAsyncThunk(
   'web3/contracts',
   async () => {
     const response = (await factory.methods.getAllDeployedContracts().call()) as Array<string>
-    console.log(response);
     // The value we return becomes the `fulfilled` action payload
     return response
   }
