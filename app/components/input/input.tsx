@@ -9,7 +9,7 @@ interface IInputProp {
 
 const Input = ({hint, required, type, onChange}: IInputProp) => {
     return (
-        <input onChange={ onChange } type={ type } className="border border-blue-300 rounded-md px-3 py-2 w-7/12" placeholder={ hint} required={ required } />
+        <input onChange={ onChange } type={ type } className="border border-blue-300 rounded-md px-3 py-2 w-full" placeholder={ hint} required={ required } />
     )
 }
 

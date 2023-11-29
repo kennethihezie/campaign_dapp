@@ -7,10 +7,15 @@ import factory from '@/lib/web3/factory'
 // will call the thunk with the `dispatch` function as the first argument. Async
 // code can then be executed and other actions can be dispatched. Thunks are
 // typically used to make async requests.
+
+export const fetchContracts = async () => {
+  return (await factory.methods.getAllDeployedContracts().call()) as Array<string>
+}
+
 export const fetchContractsAsync = createAppAsyncThunk(
   'web3/contracts',
   async () => {
-    const response = (await factory.methods.getAllDeployedContracts().call()) as Array<string>
+    const response = await fetchContracts()
     // The value we return becomes the `fulfilled` action payload
     return response
   }

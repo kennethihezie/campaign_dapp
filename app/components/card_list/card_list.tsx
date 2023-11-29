@@ -19,7 +19,7 @@ const CardList = ({campaigns}: ICardListProp) => {
               campaigns.map((value) => {
                 return <Card 
                    address={ value }
-                   campaignLink="/" />
+                   campaignLink={`/campaign/${value}`} />
               })
            }
           </div>
