@@ -14,7 +14,7 @@ const Button = ({text, hasImage, type, isLoading, onClick}: IButtonProp) => {
         <button type={ type } className={`flex flex-row px-2 items-center justify-center py-2 space-x-2 bg-blue-500 text-white ${isLoading ? 'w-[200px]' : 'w-fit'} rounded-md shadow-lg hover:bg-blue-300`} onClick={ onClick }>
            {
             hasImage ? <Image
-            src={'images/add.svg'}
+            src={'/images/add.svg'}
             width={25}
             height={24}
             alt=""

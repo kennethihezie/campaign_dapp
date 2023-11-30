@@ -4,10 +4,11 @@ import BorderCard from "@/app/components/border_card/border_card"
 import Button from "@/app/components/button/button"
 import Input from "@/app/components/input/input"
 import Layout from "@/app/components/layout/layout"
-import { useEffect, useState } from "react"
+import { FormEvent, useEffect, useState } from "react"
 import Campaign from '../../../lib/web3/campaign'
 import Loader from "@/app/components/loader/loader"
 import web3 from "@/lib/web3/web3"
+import { useRouter } from "next/navigation"
 
 interface IClientAddressPageProps {
     address: string
@@ -23,11 +24,15 @@ type ContractData =  {
 
 const ClientAddressPage = ({address}: IClientAddressPageProps) => {
    const [ isLoading, setLoading ] = useState(false)
+   const [ isBusy, setBusy ] = useState(false)
    const [ contractData, setContractData ] = useState<ContractData>()
+   const [ amount, setAmount ] = useState('0')
+   const campaign = Campaign(address)  
+   const router = useRouter()
+   
 
    const getContractDetails = async (address: string) => {
     setLoading(true)
-    const campaign = Campaign(address)  
     const summary = await campaign.methods.getSummary().call()
     
     setContractData({
@@ -52,7 +57,25 @@ const ClientAddressPage = ({address}: IClientAddressPageProps) => {
 
    useEffect(() => {
     getContractDetails(address)
-   }, [])
+   }, [ isBusy ])
+
+   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setBusy(true)
+    try {
+      const accounts = await web3.eth.getAccounts()
+
+      await campaign.methods.contribute().send({
+      from: accounts[0],
+      value: web3.utils.toWei(Number(amount), 'ether')
+    })
+    } catch (error) {
+      console.error(error);
+      window.alert(error)
+    }
+
+    setBusy(false)
+   }
 
     return (
         <Layout>
@@ -72,25 +95,22 @@ const ClientAddressPage = ({address}: IClientAddressPageProps) => {
                <BorderCard title={ contractData?.approversCount ?? '' } text="Number of Approvers" subText="Number of people who have already donated to this campaign" />
 
                <BorderCard title={ contractData?.balance ?? '' } text="Campaign Balance (Ether)" subText="The balance is how much money this contract has left to spend"/>
-
-
-
              </div>
 
-             <form className="flex flex-col space-y-4">
+             <form onSubmit={ handleSubmit } className="flex flex-col space-y-4">
                 <div className="flex flex-col w-full space-y-2">
                    <div className="text-md">
                     Contribute to this Campaign
                    </div>
 
-                   <Input hint="Enter amount" type='number' onChange={e => {}} required />
+                   <Input hint="Enter amount" type='text' onChange={e => setAmount(e.target.value)} required />
                 </div>
 
-                <Button text="Contribute" type="submit" />
+                <Button text="Contribute" type="submit" isLoading={isBusy}/>
              </form>
              </div>
 
-             <Button text="View Requests" type="submit" />
+             <Button text="View Requests" onClick={ () => router.push(`/campaign/${address}/requests`)} />
           </div>
           }
        </Layout>
