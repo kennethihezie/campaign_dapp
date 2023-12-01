@@ -6,6 +6,9 @@
     "start": "next start"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.14.19",
     "@reduxjs/toolkit": "1.9.5",
     "next": "latest",
     "react": "18.2.0",
@@ -14,6 +17,10 @@
     "react-redux": "8.1.0",
     "react-spinners": "^0.13.8",
     "web3": "^4.2.2"
+  },
+  "peerDependencies": {
+    "react": "^17.0.0 || ^18.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0"
   },
   "devDependencies": {
     "@types/node": "20.3.1",
